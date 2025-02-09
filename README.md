@@ -9,7 +9,26 @@ use anthropic_sdk::Client;
 
 async fn example() {
     let client = Client::new("your_api_key");
-    // Add more sample code here
+    
+    // Create a completion
+    let response = client.complete()
+        .model("claude-2")
+        .prompt("Hello, Claude!")
+        .max_tokens_to_sample(300)
+        .send()
+        .await?;
+    
+    println!("{}", response.completion);
+    
+    // Handle chat messages
+    let chat_response = client.messages()
+        .model("claude-2")
+        .system("You are a helpful assistant")
+        .user("Tell me a joke")
+        .send()
+        .await?;
+    
+    println!("{}", chat_response.content[0].text);
 }
 ```
 
