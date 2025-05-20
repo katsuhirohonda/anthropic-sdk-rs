@@ -197,8 +197,8 @@ impl AnthropicClient {
     /// # Examples
     ///
     /// ```no_run
-    /// # use anthropic_ai_sdk::client::AnthropicClient;
-    /// # use anthropic_ai_sdk::types::admin::AdminError;
+    /// use anthropic_ai_sdk::client::AnthropicClient;
+    /// use anthropic_ai_sdk::types::admin::api_keys::AdminError;
     /// let client = AnthropicClient::new_admin::<AdminError>(
     ///     "your-admin-api-key",
     ///     "2023-06-01",
