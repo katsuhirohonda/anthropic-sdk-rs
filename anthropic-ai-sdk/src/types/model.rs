@@ -104,7 +104,24 @@ impl ListModelsParams {
 
     /// Set the limit parameter
     pub fn limit(mut self, limit: u16) -> Self {
-        self.limit = Some(limit.min(1000));
+        self.limit = Some(limit.clamp(1, 1000));
         self
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ListModelsParams;
+
+    #[test]
+    fn limit_clamps_to_upper_bound() {
+        let params = ListModelsParams::new().limit(1500);
+        assert_eq!(params.limit, Some(1000));
+    }
+
+    #[test]
+    fn limit_clamps_to_lower_bound() {
+        let params = ListModelsParams::new().limit(0);
+        assert_eq!(params.limit, Some(1));
     }
 }
