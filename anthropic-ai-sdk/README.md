@@ -81,9 +81,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/examples) directory for more usage examples:
 
-- Modesl
+- Models
   - [List Models](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/models/list-models/src/main.rs) - How to retrieve a list of available models
-  - [Get a Models](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/models/get-a-model/src/main.rs) - How to get a model
+  - [Get a Model](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/models/get-a-model/src/main.rs) - How to get a model
 - Messages
   - [Message](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/messages/messages/src/main.rs) - How to create a message
   - [Count Message Tokens](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/messages/count-message-tokens/src/main.rs) - How to count tokens in a message
@@ -126,8 +126,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
     - [ ] Archive Workspace
   - Workspace Member Management
     - [ ] Get Workspace Member
-    - [ ] List Workspace Member
-    - [ ] Get Workspace Member
+    - [ ] List Workspace Members
     - [ ] Update Workspace Member
     - [ ] Delete Workspace Member
   - API Keys
