@@ -21,7 +21,7 @@ async fn main() {
 
     let client = AnthropicClient::new::<ModelError>(api_key, api_version).unwrap();
 
-    match client.get_model("claude-3-5-sonnet-20241022").await {
+    match client.get_model("claude-3-7-sonnet-latest").await {
         Ok(model) => {
             info!("Successfully retrieved model:");
             info!("- {} ({})", model.display_name, model.id);

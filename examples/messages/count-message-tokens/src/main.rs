@@ -26,7 +26,7 @@ async fn main() {
     let client = AnthropicClient::new::<MessageError>(api_key, api_version).unwrap();
 
     let body = CountMessageTokensParams {
-        model: "claude-3-5-sonnet-20240620".to_string(),
+        model: "claude-3-7-sonnet-latest".to_string(),
         messages: vec![Message::new_text(Role::User, "Hello, Claude")],
     };
 
