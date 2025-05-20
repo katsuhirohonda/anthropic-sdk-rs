@@ -78,6 +78,9 @@ pub struct CreateMessageParams {
     /// How the model should use tools
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tool_choice: Option<ToolChoice>,
+    /// Configuration for enabling Claude's extended thinking.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub thinking: Option<Thinking>,
     /// Request metadata
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Metadata>,
@@ -141,6 +144,11 @@ impl CreateMessageParams {
         self
     }
 
+    pub fn with_thinking(mut self, thinking: Thinking) -> Self {
+        self.thinking = Some(thinking);
+        self
+    }
+
     pub fn with_metadata(mut self, metadata: Metadata) -> Self {
         self.metadata = Some(metadata);
         self
@@ -198,6 +206,12 @@ pub enum ContentBlock {
         tool_use_id: String,
         content: String,
     },
+    /// Thinking content
+    #[serde(rename = "thinking")]
+    Thinking { thinking: String, signature: String },
+    /// Redacted thinking
+    #[serde(rename = "redacted_thinking")]
+    RedactedThinking { data: String },
 }
 
 /// Source of an image
@@ -239,6 +253,20 @@ pub enum ToolChoice {
     Tool { name: String },
 }
 
+/// Configuration for extended thinking
+#[derive(Debug, Serialize)]
+pub struct Thinking {
+    /// Must be at least 1024 tokens
+    pub budget_tokens: usize,
+    #[serde(rename = "type")]
+    pub type_: ThinkingType,
+}
+
+#[derive(Debug, Serialize)]
+pub enum ThinkingType {
+    #[serde(rename = "enabled")]
+    Enabled
+}
 /// Message metadata
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Metadata {

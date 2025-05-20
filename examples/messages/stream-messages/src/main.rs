@@ -1,7 +1,5 @@
 use anthropic_ai_sdk::client::AnthropicClient;
-use anthropic_ai_sdk::types::message::{
-    CreateMessageParams, Message, MessageClient, MessageError, RequiredMessageParams, Role,
-};
+use anthropic_ai_sdk::types::message::{CreateMessageParams, Message, MessageClient, MessageError, RequiredMessageParams, Role, Thinking, ThinkingType};
 use futures_util::StreamExt;
 use std::env;
 use tracing::{error, info};
@@ -24,11 +22,15 @@ async fn main() {
     let client = AnthropicClient::new::<MessageError>(api_key, api_version).unwrap();
 
     let body = CreateMessageParams::new(RequiredMessageParams {
-        model: "claude-3-5-sonnet-20240620".to_string(),
+        model: "claude-3-7-sonnet-latest".to_string(),
         messages: vec![Message::new_text(Role::User, "Hello, Claude")],
-        max_tokens: 1024,
+        max_tokens: 2048,
     })
-    .with_stream(true);
+    .with_stream(true)
+    .with_thinking(Thinking {
+        budget_tokens: 1024,
+        type_: ThinkingType::Enabled
+    });
 
     match client.create_message_streaming(&body).await {
         Ok(mut stream) => {
