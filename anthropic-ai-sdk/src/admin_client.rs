@@ -96,7 +96,7 @@ impl AdminClient for AnthropicClient {
     ///     )?;
     ///
     ///     // Get a specific API key
-    ///     let api_key = client.get_api_key("api_key_xyz").await?;
+    ///     let api_key = client.get_api_key_by_id("api_key_xyz").await?;
     ///     println!("API Key: {} ({})", api_key.name, api_key.id);
     ///     println!("Status: {:?}", api_key.status);
     ///     println!("Partial Hint: {}", api_key.partial_key_hint);
@@ -104,7 +104,7 @@ impl AdminClient for AnthropicClient {
     ///     Ok(())
     /// }
     /// ```
-    async fn get_api_key<'a>(&'a self, api_key_id: &'a str) -> Result<ApiKey, AdminError> {
+    async fn get_api_key_by_id<'a>(&'a self, api_key_id: &'a str) -> Result<ApiKey, AdminError> {
         self.get(
             &format!("/organizations/api_keys/{}", api_key_id),
             Option::<&()>::None,
