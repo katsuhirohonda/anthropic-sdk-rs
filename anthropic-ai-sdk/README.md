@@ -37,7 +37,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // stream(false)
     let body = CreateMessageParams::new(RequiredMessageParams {
-        model: "claude-3-5-sonnet-20240620".to_string(),
+        model: "claude-3-7-sonnet-latest".to_string(),
         messages: vec![Message::new_text(Role::User, "Hello, Claude")],
         max_tokens: 1024,
     });
@@ -53,7 +53,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // stream(true)
     let body = CreateMessageParams::new(RequiredMessageParams {
-        model: "claude-3-5-sonnet-20240620".to_string(),
+        model: "claude-3-7-sonnet-latest".to_string(),
         messages: vec![Message::new_text(Role::User, "Hello, Claude")],
         max_tokens: 1024,
     })
