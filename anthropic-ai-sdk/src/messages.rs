@@ -133,7 +133,7 @@ impl MessageClient for AnthropicClient {
             ));
         }
 
-        let url = format!("{}/messages", AnthropicClient::DEFAULT_API_BASE_URL);
+        let url = format!("{}/messages", self.get_api_base_url());
 
         let client = &self.get_client();
         let request = client
