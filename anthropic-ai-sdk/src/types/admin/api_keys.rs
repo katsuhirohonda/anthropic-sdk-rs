@@ -34,7 +34,7 @@ pub trait AdminClient {
         params: Option<&'a ListApiKeysParams>,
     ) -> Result<ListApiKeysResponse, AdminError>;
 
-    async fn get_api_key<'a>(&'a self, api_key_id: &'a str) -> Result<ApiKey, AdminError>;
+    async fn get_api_key_by_id<'a>(&'a self, api_key_id: &'a str) -> Result<ApiKey, AdminError>;
 
     async fn update_api_key<'a>(
         &'a self,

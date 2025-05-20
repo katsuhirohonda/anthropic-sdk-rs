@@ -15,8 +15,8 @@ async fn main() -> Result<(), AdminError> {
         .get(1)
         .expect("Please provide an API key ID as argument");
 
-    // Use the AdminClient trait explicitly to call get_api_key
-    let api_key = AdminClient::get_api_key(&client, api_key_id).await?;
+    // Use the AdminClient trait explicitly to call get_api_key_by_id
+    let api_key = AdminClient::get_api_key_by_id(&client, api_key_id).await?;
     println!("API Key Details:");
     println!("  ID: {}", api_key.id);
     println!("  Name: {}", api_key.name);
