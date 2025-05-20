@@ -85,7 +85,7 @@ impl AdminClient for AnthropicClient {
     ///
     /// ```no_run
     /// use anthropic_ai_sdk::client::AnthropicClient;
-    /// use anthropic_ai_sdk::types::admin::api_keys::{AdminClient, AdminError};
+    /// use anthropic_ai_sdk::types::admin::{AdminClient, AdminError};
     /// use tokio;
     ///
     /// #[tokio::main]
@@ -138,7 +138,7 @@ impl AdminClient for AnthropicClient {
     ///
     /// ```no_run
     /// use anthropic_ai_sdk::client::AnthropicClient;
-    /// use anthropic_ai_sdk::types::admin::api_keys::{AdminClient, AdminError, ApiKeyStatus, UpdateApiKeyParams};
+    /// use anthropic_ai_sdk::types::admin::api_keys::{AdminClient, AdminError, ApiKeyStatus, AdminUpdateApiKeyParams};
     /// use tokio;
     ///
     /// #[tokio::main]
@@ -149,7 +149,7 @@ impl AdminClient for AnthropicClient {
     ///     )?;
     ///
     ///     // Update an API key
-    ///     let params = UpdateApiKeyParams::new()
+    ///     let params = AdminUpdateApiKeyParams::new()
     ///         .name("Updated API Key")
     ///         .status(ApiKeyStatus::Inactive);
     ///
