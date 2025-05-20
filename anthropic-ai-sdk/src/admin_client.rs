@@ -85,7 +85,7 @@ impl AdminClient for AnthropicClient {
     ///
     /// ```no_run
     /// use anthropic_ai_sdk::client::AnthropicClient;
-    /// use anthropic_ai_sdk::types::admin::{AdminClient, AdminError};
+    /// use anthropic_ai_sdk::types::admin::api_keys::{AdminClient, AdminError};
     /// use tokio;
     ///
     /// #[tokio::main]
