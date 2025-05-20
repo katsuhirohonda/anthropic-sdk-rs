@@ -23,14 +23,14 @@ async fn main() {
     let client = AnthropicClient::new::<MessageError>(api_key, api_version).unwrap();
 
     let body = CreateMessageParams::new(RequiredMessageParams {
-        model: "claude-3-5-sonnet-20240620".to_string(),
+        model: "claude-3-7-sonnet-latest".to_string(),
         messages: vec![Message::new_text(Role::User, "Hello, Claude")],
         max_tokens: 1024,
     });
 
     // Or with some optional parameters
     // let params_with_options = CreateMessageParams::new(RequiredMessageParams {
-    //     model: "claude-3-5-sonnet-20240620".to_string(),
+    //     model: "claude-3-7-sonnet-latest".to_string(),
     //     messages: vec![Message::new_text(Role::User, "Hello, Claude")],
     //     max_tokens: 1024,
     // })
