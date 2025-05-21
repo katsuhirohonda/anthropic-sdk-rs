@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use super::users::{ListUsersParams, ListUsersResponse};
 use super::workspaces::{
-    GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse, Workspace,
+    GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse,
 };
 use thiserror::Error;
 use time::OffsetDateTime;
