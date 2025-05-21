@@ -119,8 +119,8 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
     - [ ] Create Invite
     - [ ] Delete Invite
   - Workspace Management
-    - [ ] Get Workspace
-    - [ ] List Workspaces
+    - [x] Get Workspace
+    - [x] List Workspaces
     - [ ] Update Workspace
     - [ ] Create Workspace
     - [ ] Archive Workspace

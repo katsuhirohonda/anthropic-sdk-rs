@@ -5,6 +5,9 @@
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use super::users::{ListUsersParams, ListUsersResponse};
+use super::workspaces::{
+    GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse, Workspace,
+};
 use thiserror::Error;
 use time::OffsetDateTime;
 use time::serde::rfc3339;
@@ -49,6 +52,13 @@ pub trait AdminClient {
     ) -> Result<ListUsersResponse, AdminError>;
 
     async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
+
+    async fn list_workspaces<'a>(
+        &'a self,
+        params: Option<&'a ListWorkspacesParams>,
+    ) -> Result<ListWorkspacesResponse, AdminError>;
+
+    async fn get_workspace<'a>(&'a self, workspace_id: &'a str) -> Result<GetWorkspaceResponse, AdminError>;
 }
 
 /// Parameters for listing API keys
