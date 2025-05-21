@@ -11,6 +11,9 @@ use crate::types::admin::api_keys::{
 use crate::types::admin::users::{
     ListUsersParams, ListUsersResponse, OrganizationUser,
 };
+use crate::types::admin::workspaces::{
+    GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse,
+};
 use async_trait::async_trait;
 
 #[async_trait]
@@ -187,5 +190,23 @@ impl AdminClient for AnthropicClient {
     async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<OrganizationUser, AdminError> {
         self.get(&format!("/organizations/users/{}", user_id), Option::<&()>::None)
             .await
+    }
+
+    async fn list_workspaces<'a>(
+        &'a self,
+        params: Option<&'a ListWorkspacesParams>,
+    ) -> Result<ListWorkspacesResponse, AdminError> {
+        self.get("/organizations/workspaces", params).await
+    }
+
+    async fn get_workspace<'a>(
+        &'a self,
+        workspace_id: &'a str,
+    ) -> Result<GetWorkspaceResponse, AdminError> {
+        self.get(
+            &format!("/organizations/workspaces/{}", workspace_id),
+            Option::<&()>::None,
+        )
+        .await
     }
 }

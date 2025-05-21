@@ -17,6 +17,8 @@ members = [
     "examples/admin/api-keys/update-api-key",
     "examples/admin/organization-member-management/get-user",
     "examples/admin/organization-member-management/list-users",
+    "examples/admin/workspace-management/get-workspace",
+    "examples/admin/workspace-management/list-workspaces",
 ]
 default-members = ["anthropic-ai-sdk"]
 resolver = "2"
