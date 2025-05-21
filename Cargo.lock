@@ -19,7 +19,7 @@ checksum = "512761e0bb2578dd7380c6baaa0f4ce03e84f95e960231d1dec8bf4d7d6e2627"
 
 [[package]]
 name = "anthropic-ai-sdk"
-version = "0.2.12"
+version = "0.2.13"
 dependencies = [
  "async-trait",
  "eventsource-stream",
@@ -367,6 +367,16 @@ dependencies = [
 
 [[package]]
 name = "get-workspace"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "get-workspace-member"
 version = "0.1.0"
 dependencies = [
  "anthropic-ai-sdk",
@@ -762,6 +772,16 @@ dependencies = [
 
 [[package]]
 name = "list-users"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "list-workspace-members"
 version = "0.1.0"
 dependencies = [
  "anthropic-ai-sdk",
