@@ -16,6 +16,7 @@ use crate::types::admin::workspaces::{
 };
 use async_trait::async_trait;
 use crate::types::admin::workspace_members::{GetWorkspaceMemberResponse, ListWorkspaceMembersParams, ListWorkspaceMembersResponse};
+use crate::types::admin::invites::{GetInviteResponse, ListInvitesParams, ListInvitesResponse};
 
 #[async_trait]
 impl AdminClient for AnthropicClient {
@@ -233,5 +234,16 @@ impl AdminClient for AnthropicClient {
             Option::<&()>::None,
         )
         .await
+    }
+
+    async fn list_invites<'a>(
+        &'a self,
+        params: Option<&'a ListInvitesParams>,
+    ) -> Result<ListInvitesResponse, AdminError> {
+        self.get("/organizations/invites", params).await
+    }
+
+    async fn get_invite<'a>(&'a self, invite_id: &'a str) -> Result<GetInviteResponse, AdminError> {
+        self.get(&format!("/organizations/invites/{}", invite_id), Option::<&()>::None).await
     }
 }

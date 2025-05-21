@@ -89,6 +89,9 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [Count Message Tokens](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/messages/count-message-tokens/src/main.rs) - How to count tokens in a message
 - Message Batch
   - [Create a Message Batch](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/message-batches/create-a-message-batch/src/main.rs) - How to create a message batch
+- Admin Invites
+  - [Get Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/get-invite/src/main.rs) - How to retrieve an organization invite
+  - [List Invites](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/list-invites/src/main.rs) - How to list organization invites
 
 > **Note:** The examples listed above are only a subset. For additional detailed usage examples, please refer to the [examples directory](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/examples).
 
@@ -114,8 +117,8 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
     - [ ] Update User
     - [ ] Remove User
   - Organization Invites
-    - [ ] Get Invite
-    - [ ] List Invites
+    - [x] Get Invite
+    - [x] List Invites
     - [ ] Create Invite
     - [ ] Delete Invite
   - Workspace Management
