@@ -19,7 +19,7 @@ checksum = "512761e0bb2578dd7380c6baaa0f4ce03e84f95e960231d1dec8bf4d7d6e2627"
 
 [[package]]
 name = "anthropic-ai-sdk"
-version = "0.2.13"
+version = "0.2.14"
 dependencies = [
  "async-trait",
  "eventsource-stream",
@@ -347,6 +347,16 @@ dependencies = [
 
 [[package]]
 name = "get-api-key"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "get-invite"
 version = "0.1.0"
 dependencies = [
  "anthropic-ai-sdk",
@@ -742,6 +752,16 @@ checksum = "fe7db12097d22ec582439daf8618b8fdd1a7bef6270e9af3b1ebcd30893cf413"
 
 [[package]]
 name = "list-api-keys"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "list-invites"
 version = "0.1.0"
 dependencies = [
  "anthropic-ai-sdk",
