@@ -41,6 +41,8 @@ pub trait AdminClient {
         api_key_id: &'a str,
         params: &'a AdminUpdateApiKeyParams,
     ) -> Result<ApiKey, AdminError>;
+
+    async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
 }
 
 /// Parameters for listing API keys

@@ -109,7 +109,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [x] Delete a Message Batch
 - Admin API
   - Organization Member Management
-    - [ ] Get User
+    - [x] Get User
     - [ ] List Users
     - [ ] Update User
     - [ ] Remove User
