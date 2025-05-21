@@ -4,6 +4,7 @@
 //!
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
+use super::users::{ListUsersParams, ListUsersResponse};
 use thiserror::Error;
 use time::OffsetDateTime;
 use time::serde::rfc3339;
@@ -41,6 +42,11 @@ pub trait AdminClient {
         api_key_id: &'a str,
         params: &'a AdminUpdateApiKeyParams,
     ) -> Result<ApiKey, AdminError>;
+
+    async fn list_users<'a>(
+        &'a self,
+        params: Option<&'a ListUsersParams>,
+    ) -> Result<ListUsersResponse, AdminError>;
 
     async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
 }
