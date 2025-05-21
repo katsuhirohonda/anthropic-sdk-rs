@@ -9,6 +9,7 @@ use super::workspaces::{
     GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse,
 };
 use thiserror::Error;
+use super::workspace_members::{GetWorkspaceMemberResponse, ListWorkspaceMembersParams, ListWorkspaceMembersResponse};
 use time::OffsetDateTime;
 use time::serde::rfc3339;
 
@@ -59,6 +60,18 @@ pub trait AdminClient {
     ) -> Result<ListWorkspacesResponse, AdminError>;
 
     async fn get_workspace<'a>(&'a self, workspace_id: &'a str) -> Result<GetWorkspaceResponse, AdminError>;
+
+    async fn list_workspace_members<'a>(
+        &'a self,
+        workspace_id: &'a str,
+        params: Option<&'a ListWorkspaceMembersParams>,
+    ) -> Result<ListWorkspaceMembersResponse, AdminError>;
+
+    async fn get_workspace_member<'a>(
+        &'a self,
+        workspace_id: &'a str,
+        user_id: &'a str,
+    ) -> Result<GetWorkspaceMemberResponse, AdminError>;
 }
 
 /// Parameters for listing API keys
