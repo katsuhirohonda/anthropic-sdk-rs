@@ -8,7 +8,9 @@ use crate::types::admin::api_keys::{
     AdminClient, AdminError, AdminUpdateApiKeyParams, ApiKey, ListApiKeysParams,
     ListApiKeysResponse,
 };
-use crate::types::admin::users::OrganizationUser;
+use crate::types::admin::users::{
+    ListUsersParams, ListUsersResponse, OrganizationUser,
+};
 use async_trait::async_trait;
 
 #[async_trait]
@@ -171,6 +173,14 @@ impl AdminClient for AnthropicClient {
             Some(params),
         )
         .await
+    }
+
+    /// Lists organization users
+    async fn list_users<'a>(
+        &'a self,
+        params: Option<&'a ListUsersParams>,
+    ) -> Result<ListUsersResponse, AdminError> {
+        self.get("/organizations/users", params).await
     }
 
     /// Retrieves a user in the organization
