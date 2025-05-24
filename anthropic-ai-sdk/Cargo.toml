@@ -1,6 +1,6 @@
 [package]
 name = "anthropic-ai-sdk"
-version = "0.2.15"
+version = "0.2.16"
 edition = "2024"
 authors = ["Katsuhiro Honda<freewave3@gmail.com>"]
 categories = ["api-bindings"]
