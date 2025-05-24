@@ -20,6 +20,7 @@ members = [
     "examples/admin/organization-member-management/remove-user",
     "examples/admin/workspace-management/get-workspace",
     "examples/admin/workspace-management/list-workspaces",
+    "examples/admin/workspace-management/update-workspace",
     "examples/admin/workspace-member-management/get-workspace-member",
     "examples/admin/workspace-member-management/list-workspace-members",
     "examples/admin/organization-invites/get-invite",

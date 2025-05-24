@@ -232,6 +232,18 @@ impl AdminClient for AnthropicClient {
         .await
     }
 
+    async fn update_workspace<'a>(
+        &'a self,
+        workspace_id: &'a str,
+        params: &'a crate::types::admin::workspaces::AdminUpdateWorkspaceParams,
+    ) -> Result<crate::types::admin::workspaces::Workspace, AdminError> {
+        self.post(
+            &format!("/organizations/workspaces/{}", workspace_id),
+            Some(params),
+        )
+        .await
+    }
+
     async fn list_workspace_members<'a>(
         &'a self,
         workspace_id: &'a str,
