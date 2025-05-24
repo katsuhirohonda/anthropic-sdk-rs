@@ -90,6 +90,11 @@ pub trait AdminClient {
         params: Option<&'a ListInvitesParams>,
     ) -> Result<ListInvitesResponse, AdminError>;
 
+    async fn create_invite<'a>(
+        &'a self,
+        params: &'a crate::types::admin::invites::CreateInviteParams,
+    ) -> Result<crate::types::admin::invites::Invite, AdminError>;
+
     async fn get_invite<'a>(&'a self, invite_id: &'a str) -> Result<GetInviteResponse, AdminError>;
 }
 

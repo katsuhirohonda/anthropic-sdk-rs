@@ -36,6 +36,25 @@ pub struct Invite {
     pub type_: String,
 }
 
+/// Parameters for creating an invite.
+#[derive(Debug, Serialize)]
+pub struct CreateInviteParams {
+    /// Email of the User.
+    pub email: String,
+    /// Role for the invited User. Cannot be `Admin`.
+    pub role: UserRole,
+}
+
+impl CreateInviteParams {
+    /// Create a new [`CreateInviteParams`].
+    pub fn new(email: impl Into<String>, role: UserRole) -> Self {
+        Self {
+            email: email.into(),
+            role,
+        }
+    }
+}
+
 /// Parameters for listing invites.
 #[derive(Debug, Serialize, Default)]
 pub struct ListInvitesParams {
