@@ -93,6 +93,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [Get Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/get-invite/src/main.rs) - How to retrieve an organization invite
   - [List Invites](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/list-invites/src/main.rs) - How to list organization invites
   - [Create Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/create-invite/src/main.rs) - How to create an organization invite
+  - [Delete Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/delete-invite/src/main.rs) - How to delete an organization invite
 
 > **Note:** The examples listed above are only a subset. For additional detailed usage examples, please refer to the [examples directory](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/examples).
 
@@ -121,7 +122,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
     - [x] Get Invite
     - [x] List Invites
     - [x] Create Invite
-    - [ ] Delete Invite
+    - [x] Delete Invite
   - Workspace Management
     - [x] Get Workspace
     - [x] List Workspaces
