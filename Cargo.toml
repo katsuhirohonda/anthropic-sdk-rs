@@ -26,6 +26,7 @@ members = [
     "examples/admin/organization-invites/get-invite",
     "examples/admin/organization-invites/list-invites",
     "examples/admin/organization-invites/create-invite",
+    "examples/admin/organization-invites/delete-invite",
 ]
 default-members = ["anthropic-ai-sdk"]
 resolver = "2"

@@ -10,7 +10,9 @@ use super::workspaces::{
 };
 use thiserror::Error;
 use super::workspace_members::{GetWorkspaceMemberResponse, ListWorkspaceMembersParams, ListWorkspaceMembersResponse};
-use super::invites::{GetInviteResponse, ListInvitesParams, ListInvitesResponse};
+use super::invites::{
+    DeleteInviteResponse, GetInviteResponse, ListInvitesParams, ListInvitesResponse,
+};
 use time::OffsetDateTime;
 use time::serde::rfc3339;
 
@@ -102,6 +104,11 @@ pub trait AdminClient {
     ) -> Result<crate::types::admin::invites::Invite, AdminError>;
 
     async fn get_invite<'a>(&'a self, invite_id: &'a str) -> Result<GetInviteResponse, AdminError>;
+
+    async fn delete_invite<'a>(
+        &'a self,
+        invite_id: &'a str,
+    ) -> Result<DeleteInviteResponse, AdminError>;
 }
 
 /// Parameters for listing API keys

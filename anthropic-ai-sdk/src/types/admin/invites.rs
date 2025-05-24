@@ -110,6 +110,16 @@ pub struct ListInvitesResponse {
 /// Response type for retrieving an invite.
 pub type GetInviteResponse = Invite;
 
+/// Response type for deleting an invite.
+#[derive(Debug, Deserialize)]
+pub struct DeleteInviteResponse {
+    /// ID of the invite.
+    pub id: String,
+    /// Deleted object type. Always `"invite_deleted"`.
+    #[serde(rename = "type")]
+    pub obj_type: String,
+}
+
 #[cfg(test)]
 mod tests {
     use super::ListInvitesParams;
