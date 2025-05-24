@@ -92,6 +92,20 @@ pub struct ListUsersResponse {
     pub last_id: Option<String>,
 }
 
+/// Parameters for updating a user.
+#[derive(Debug, Serialize)]
+pub struct AdminUpdateUserParams {
+    /// New role for the User.
+    pub role: UserRole,
+}
+
+impl AdminUpdateUserParams {
+    /// Create a new `AdminUpdateUserParams` with the required role.
+    pub fn new(role: UserRole) -> Self {
+        Self { role }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::ListUsersParams;

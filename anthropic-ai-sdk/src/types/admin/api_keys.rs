@@ -55,6 +55,12 @@ pub trait AdminClient {
 
     async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
 
+    async fn update_user<'a>(
+        &'a self,
+        user_id: &'a str,
+        params: &'a crate::types::admin::users::AdminUpdateUserParams,
+    ) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
+
     async fn list_workspaces<'a>(
         &'a self,
         params: Option<&'a ListWorkspacesParams>,
