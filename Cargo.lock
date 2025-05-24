@@ -19,7 +19,7 @@ checksum = "512761e0bb2578dd7380c6baaa0f4ce03e84f95e960231d1dec8bf4d7d6e2627"
 
 [[package]]
 name = "anthropic-ai-sdk"
-version = "0.2.14"
+version = "0.2.15"
 dependencies = [
  "async-trait",
  "eventsource-stream",
@@ -1088,6 +1088,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b8c0c260b63a8219631167be35e6a988e9554dbd323f8bd08439c8ed1302bd1"
 dependencies = [
  "bitflags",
+]
+
+[[package]]
+name = "remove-user"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]

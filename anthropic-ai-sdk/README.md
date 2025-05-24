@@ -115,7 +115,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
     - [x] Get User
     - [x] List Users
     - [x] Update User
-    - [ ] Remove User
+    - [x] Remove User
   - Organization Invites
     - [x] Get Invite
     - [x] List Invites
