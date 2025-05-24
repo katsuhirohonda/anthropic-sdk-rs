@@ -133,7 +133,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
     - [x] Get Workspace Member
     - [x] List Workspace Members
     - [x] Add Workspace Member
-    - [ ] Update Workspace Member
+    - [x] Update Workspace Member
     - [ ] Delete Workspace Member
   - API Keys
     - [x] Get API Key
