@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
-use time::serde::rfc3339;
 use time::OffsetDateTime;
+use time::serde::rfc3339;
 
 /// Organization role of the user.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum UserRole {
     User,
