@@ -9,7 +9,7 @@ use crate::types::admin::api_keys::{
     ListApiKeysResponse,
 };
 use crate::types::admin::users::{
-    ListUsersParams, ListUsersResponse, OrganizationUser,
+    AdminUpdateUserParams, ListUsersParams, ListUsersResponse, OrganizationUser,
 };
 use crate::types::admin::workspaces::{
     GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse,
@@ -192,6 +192,18 @@ impl AdminClient for AnthropicClient {
     async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<OrganizationUser, AdminError> {
         self.get(&format!("/organizations/users/{}", user_id), Option::<&()>::None)
             .await
+    }
+
+    async fn update_user<'a>(
+        &'a self,
+        user_id: &'a str,
+        params: &'a AdminUpdateUserParams,
+    ) -> Result<OrganizationUser, AdminError> {
+        self.post(
+            &format!("/organizations/users/{}", user_id),
+            Some(params),
+        )
+        .await
     }
 
     async fn list_workspaces<'a>(

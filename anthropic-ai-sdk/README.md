@@ -114,7 +114,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - Organization Member Management
     - [x] Get User
     - [x] List Users
-    - [ ] Update User
+    - [x] Update User
     - [ ] Remove User
   - Organization Invites
     - [x] Get Invite
