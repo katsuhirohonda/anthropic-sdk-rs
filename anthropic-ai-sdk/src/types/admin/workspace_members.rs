@@ -24,6 +24,25 @@ pub struct WorkspaceMember {
     pub workspace_role: WorkspaceRole,
 }
 
+/// Parameters for adding a workspace member.
+#[derive(Debug, Serialize)]
+pub struct AdminAddWorkspaceMemberParams {
+    /// ID of the user to add to the workspace.
+    pub user_id: String,
+    /// Role for the new workspace member.
+    pub workspace_role: WorkspaceRole,
+}
+
+impl AdminAddWorkspaceMemberParams {
+    /// Create new parameters with the required fields.
+    pub fn new(user_id: impl Into<String>, workspace_role: WorkspaceRole) -> Self {
+        Self {
+            user_id: user_id.into(),
+            workspace_role,
+        }
+    }
+}
+
 /// Parameters for listing workspace members.
 #[derive(Debug, Serialize, Default)]
 pub struct ListWorkspaceMembersParams {

@@ -85,6 +85,12 @@ pub trait AdminClient {
         user_id: &'a str,
     ) -> Result<GetWorkspaceMemberResponse, AdminError>;
 
+    async fn add_workspace_member<'a>(
+        &'a self,
+        workspace_id: &'a str,
+        params: &'a crate::types::admin::workspace_members::AdminAddWorkspaceMemberParams,
+    ) -> Result<crate::types::admin::workspace_members::WorkspaceMember, AdminError>;
+
     async fn list_invites<'a>(
         &'a self,
         params: Option<&'a ListInvitesParams>,
