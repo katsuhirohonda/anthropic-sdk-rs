@@ -86,9 +86,29 @@ pub struct ListWorkspacesResponse {
 /// Response type for retrieving a workspace.
 pub type GetWorkspaceResponse = Workspace;
 
+/// Parameters for updating a workspace.
+#[derive(Debug, Serialize)]
+pub struct AdminUpdateWorkspaceParams {
+    /// Name of the workspace (1-40 characters).
+    pub name: String,
+}
+
+impl AdminUpdateWorkspaceParams {
+    /// Create a new `AdminUpdateWorkspaceParams` with the required name.
+    pub fn new(name: impl Into<String>) -> Self {
+        let name = name.into();
+        assert!(
+            !name.is_empty() && name.chars().count() <= 40,
+            "workspace name must be 1-40 characters"
+        );
+        Self { name }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::ListWorkspacesParams;
+    use super::AdminUpdateWorkspaceParams;
 
     #[test]
     fn limit_clamps_upper_bound() {
@@ -100,6 +120,25 @@ mod tests {
     fn limit_clamps_lower_bound() {
         let params = ListWorkspacesParams::new().limit(0);
         assert_eq!(params.limit, Some(1));
+    }
+
+    #[test]
+    fn update_params_accepts_valid_name() {
+        let params = AdminUpdateWorkspaceParams::new("hello");
+        assert_eq!(params.name, "hello");
+    }
+
+    #[test]
+    #[should_panic]
+    fn update_params_rejects_empty_name() {
+        AdminUpdateWorkspaceParams::new("");
+    }
+
+    #[test]
+    #[should_panic]
+    fn update_params_rejects_long_name() {
+        let s = "a".repeat(41);
+        AdminUpdateWorkspaceParams::new(s);
     }
 }
 
