@@ -9,7 +9,7 @@ use crate::types::admin::api_keys::{
     ListApiKeysResponse,
 };
 use crate::types::admin::users::{
-    AdminUpdateUserParams, ListUsersParams, ListUsersResponse, OrganizationUser,
+    AdminUpdateUserParams, DeleteUserResponse, ListUsersParams, ListUsersResponse, OrganizationUser,
 };
 use crate::types::admin::workspaces::{
     GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse,
@@ -202,6 +202,14 @@ impl AdminClient for AnthropicClient {
         self.post(
             &format!("/organizations/users/{}", user_id),
             Some(params),
+        )
+        .await
+    }
+
+    async fn delete_user<'a>(&'a self, user_id: &'a str) -> Result<DeleteUserResponse, AdminError> {
+        self.delete::<DeleteUserResponse, (), AdminError>(
+            &format!("/organizations/users/{}", user_id),
+            Option::<&()>::None,
         )
         .await
     }

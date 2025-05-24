@@ -61,6 +61,11 @@ pub trait AdminClient {
         params: &'a crate::types::admin::users::AdminUpdateUserParams,
     ) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
 
+    async fn delete_user<'a>(
+        &'a self,
+        user_id: &'a str,
+    ) -> Result<crate::types::admin::users::DeleteUserResponse, AdminError>;
+
     async fn list_workspaces<'a>(
         &'a self,
         params: Option<&'a ListWorkspacesParams>,

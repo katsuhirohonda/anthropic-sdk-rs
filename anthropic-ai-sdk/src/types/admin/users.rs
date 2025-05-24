@@ -106,6 +106,16 @@ impl AdminUpdateUserParams {
     }
 }
 
+/// Response type for deleting a user.
+#[derive(Debug, Deserialize)]
+pub struct DeleteUserResponse {
+    /// ID of the User.
+    pub id: String,
+    /// Deleted object type. Always `"user_deleted"`.
+    #[serde(rename = "type")]
+    pub obj_type: String,
+}
+
 #[cfg(test)]
 mod tests {
     use super::ListUsersParams;
