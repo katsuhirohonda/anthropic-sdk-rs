@@ -43,6 +43,20 @@ impl AdminAddWorkspaceMemberParams {
     }
 }
 
+/// Parameters for updating a workspace member.
+#[derive(Debug, Serialize)]
+pub struct AdminUpdateWorkspaceMemberParams {
+    /// New workspace role for the User.
+    pub workspace_role: WorkspaceRole,
+}
+
+impl AdminUpdateWorkspaceMemberParams {
+    /// Create new parameters with the required workspace role.
+    pub fn new(workspace_role: WorkspaceRole) -> Self {
+        Self { workspace_role }
+    }
+}
+
 /// Parameters for listing workspace members.
 #[derive(Debug, Serialize, Default)]
 pub struct ListWorkspaceMembersParams {
