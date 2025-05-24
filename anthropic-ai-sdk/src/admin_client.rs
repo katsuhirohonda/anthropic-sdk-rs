@@ -278,6 +278,13 @@ impl AdminClient for AnthropicClient {
         self.get("/organizations/invites", params).await
     }
 
+    async fn create_invite<'a>(
+        &'a self,
+        params: &'a crate::types::admin::invites::CreateInviteParams,
+    ) -> Result<crate::types::admin::invites::Invite, AdminError> {
+        self.post("/organizations/invites", Some(params)).await
+    }
+
     async fn get_invite<'a>(&'a self, invite_id: &'a str) -> Result<GetInviteResponse, AdminError> {
         self.get(&format!("/organizations/invites/{}", invite_id), Option::<&()>::None).await
     }
