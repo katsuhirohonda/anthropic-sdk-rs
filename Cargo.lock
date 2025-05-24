@@ -1745,6 +1745,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "update-workspace"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "update-workspace-member"
 version = "0.1.0"
 dependencies = [
