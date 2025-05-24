@@ -3,6 +3,16 @@
 version = 4
 
 [[package]]
+name = "add-workspace-member"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "addr2line"
 version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -19,7 +29,7 @@ checksum = "512761e0bb2578dd7380c6baaa0f4ce03e84f95e960231d1dec8bf4d7d6e2627"
 
 [[package]]
 name = "anthropic-ai-sdk"
-version = "0.2.15"
+version = "0.2.16"
 dependencies = [
  "async-trait",
  "eventsource-stream",
@@ -150,6 +160,16 @@ dependencies = [
 
 [[package]]
 name = "create-a-message-batches"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "create-invite"
 version = "0.1.0"
 dependencies = [
  "anthropic-ai-sdk",
