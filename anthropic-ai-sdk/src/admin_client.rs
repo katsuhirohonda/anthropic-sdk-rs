@@ -227,6 +227,13 @@ impl AdminClient for AnthropicClient {
         self.get("/organizations/workspaces", params).await
     }
 
+    async fn create_workspace<'a>(
+        &'a self,
+        params: &'a crate::types::admin::workspaces::AdminCreateWorkspaceParams,
+    ) -> Result<crate::types::admin::workspaces::CreateWorkspaceResponse, AdminError> {
+        self.post("/organizations/workspaces", Some(params)).await
+    }
+
     async fn get_workspace<'a>(
         &'a self,
         workspace_id: &'a str,

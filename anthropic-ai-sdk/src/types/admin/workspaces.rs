@@ -86,6 +86,28 @@ pub struct ListWorkspacesResponse {
 /// Response type for retrieving a workspace.
 pub type GetWorkspaceResponse = Workspace;
 
+/// Response type for creating a workspace.
+pub type CreateWorkspaceResponse = Workspace;
+
+/// Parameters for creating a workspace.
+#[derive(Debug, Serialize)]
+pub struct AdminCreateWorkspaceParams {
+    /// Name of the Workspace (1-40 characters).
+    pub name: String,
+}
+
+impl AdminCreateWorkspaceParams {
+    /// Create a new `AdminCreateWorkspaceParams` with the required name.
+    pub fn new(name: impl Into<String>) -> Self {
+        let name = name.into();
+        assert!(
+            !name.is_empty() && name.chars().count() <= 40,
+            "workspace name must be 1-40 characters"
+        );
+        Self { name }
+    }
+}
+
 /// Parameters for updating a workspace.
 #[derive(Debug, Serialize)]
 pub struct AdminUpdateWorkspaceParams {
@@ -109,6 +131,7 @@ impl AdminUpdateWorkspaceParams {
 mod tests {
     use super::ListWorkspacesParams;
     use super::AdminUpdateWorkspaceParams;
+    use super::AdminCreateWorkspaceParams;
 
     #[test]
     fn limit_clamps_upper_bound() {
@@ -139,6 +162,25 @@ mod tests {
     fn update_params_rejects_long_name() {
         let s = "a".repeat(41);
         AdminUpdateWorkspaceParams::new(s);
+    }
+
+    #[test]
+    fn create_params_accepts_valid_name() {
+        let params = AdminCreateWorkspaceParams::new("valid");
+        assert_eq!(params.name, "valid");
+    }
+
+    #[test]
+    #[should_panic]
+    fn create_params_rejects_empty_name() {
+        AdminCreateWorkspaceParams::new("");
+    }
+
+    #[test]
+    #[should_panic]
+    fn create_params_rejects_long_name() {
+        let s = "a".repeat(41);
+        AdminCreateWorkspaceParams::new(s);
     }
 }
 

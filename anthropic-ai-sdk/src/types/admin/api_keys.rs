@@ -73,6 +73,11 @@ pub trait AdminClient {
         params: Option<&'a ListWorkspacesParams>,
     ) -> Result<ListWorkspacesResponse, AdminError>;
 
+    async fn create_workspace<'a>(
+        &'a self,
+        params: &'a crate::types::admin::workspaces::AdminCreateWorkspaceParams,
+    ) -> Result<crate::types::admin::workspaces::CreateWorkspaceResponse, AdminError>;
+
     async fn get_workspace<'a>(&'a self, workspace_id: &'a str) -> Result<GetWorkspaceResponse, AdminError>;
 
     async fn update_workspace<'a>(
