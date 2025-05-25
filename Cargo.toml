@@ -22,6 +22,7 @@ members = [
     "examples/admin/workspace-management/list-workspaces",
     "examples/admin/workspace-management/create-workspace",
     "examples/admin/workspace-management/update-workspace",
+    "examples/admin/workspace-management/archive-workspace",
     "examples/admin/workspace-member-management/get-workspace-member",
     "examples/admin/workspace-member-management/list-workspace-members",
     "examples/admin/workspace-member-management/add-workspace-member",

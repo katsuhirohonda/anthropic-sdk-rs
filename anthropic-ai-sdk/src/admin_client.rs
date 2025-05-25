@@ -257,6 +257,17 @@ impl AdminClient for AnthropicClient {
         .await
     }
 
+    async fn archive_workspace<'a>(
+        &'a self,
+        workspace_id: &'a str,
+    ) -> Result<crate::types::admin::workspaces::ArchiveWorkspaceResponse, AdminError> {
+        self.post(
+            &format!("/organizations/workspaces/{}/archive", workspace_id),
+            Option::<&()>::None,
+        )
+        .await
+    }
+
     async fn list_workspace_members<'a>(
         &'a self,
         workspace_id: &'a str,
