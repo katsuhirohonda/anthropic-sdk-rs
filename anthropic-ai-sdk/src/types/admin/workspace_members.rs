@@ -112,6 +112,18 @@ pub struct ListWorkspaceMembersResponse {
 /// Response type for retrieving a workspace member.
 pub type GetWorkspaceMemberResponse = WorkspaceMember;
 
+/// Response type for deleting a workspace member.
+#[derive(Debug, Deserialize)]
+pub struct DeleteWorkspaceMemberResponse {
+    /// ID of the User.
+    pub user_id: String,
+    /// ID of the Workspace.
+    pub workspace_id: String,
+    /// Deleted object type. Always `"workspace_member_deleted"`.
+    #[serde(rename = "type")]
+    pub obj_type: String,
+}
+
 #[cfg(test)]
 mod tests {
     use super::ListWorkspaceMembersParams;
