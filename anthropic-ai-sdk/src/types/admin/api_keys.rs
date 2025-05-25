@@ -106,6 +106,12 @@ pub trait AdminClient {
         params: &'a crate::types::admin::workspace_members::AdminUpdateWorkspaceMemberParams,
     ) -> Result<crate::types::admin::workspace_members::WorkspaceMember, AdminError>;
 
+    async fn delete_workspace_member<'a>(
+        &'a self,
+        workspace_id: &'a str,
+        user_id: &'a str,
+    ) -> Result<crate::types::admin::workspace_members::DeleteWorkspaceMemberResponse, AdminError>;
+
     async fn list_invites<'a>(
         &'a self,
         params: Option<&'a ListInvitesParams>,

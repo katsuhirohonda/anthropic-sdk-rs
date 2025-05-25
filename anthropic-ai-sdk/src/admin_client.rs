@@ -302,6 +302,18 @@ impl AdminClient for AnthropicClient {
         .await
     }
 
+    async fn delete_workspace_member<'a>(
+        &'a self,
+        workspace_id: &'a str,
+        user_id: &'a str,
+    ) -> Result<crate::types::admin::workspace_members::DeleteWorkspaceMemberResponse, AdminError> {
+        self.delete::<crate::types::admin::workspace_members::DeleteWorkspaceMemberResponse, (), AdminError>(
+            &format!("/organizations/workspaces/{}/members/{}", workspace_id, user_id),
+            Option::<&()>::None,
+        )
+        .await
+    }
+
     async fn list_invites<'a>(
         &'a self,
         params: Option<&'a ListInvitesParams>,
