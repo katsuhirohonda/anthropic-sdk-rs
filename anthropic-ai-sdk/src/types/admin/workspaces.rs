@@ -89,6 +89,9 @@ pub type GetWorkspaceResponse = Workspace;
 /// Response type for creating a workspace.
 pub type CreateWorkspaceResponse = Workspace;
 
+/// Response type for archiving a workspace.
+pub type ArchiveWorkspaceResponse = Workspace;
+
 /// Parameters for creating a workspace.
 #[derive(Debug, Serialize)]
 pub struct AdminCreateWorkspaceParams {
