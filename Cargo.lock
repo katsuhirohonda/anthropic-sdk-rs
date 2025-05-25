@@ -29,7 +29,7 @@ checksum = "512761e0bb2578dd7380c6baaa0f4ce03e84f95e960231d1dec8bf4d7d6e2627"
 
 [[package]]
 name = "anthropic-ai-sdk"
-version = "0.2.17"
+version = "0.2.18"
 dependencies = [
  "async-trait",
  "eventsource-stream",
@@ -179,6 +179,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "create-workspace"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "delete-a-message-batch"
 version = "0.1.0"
 dependencies = [
@@ -190,6 +200,16 @@ dependencies = [
 
 [[package]]
 name = "delete-invite"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "delete-workspace-member"
 version = "0.1.0"
 dependencies = [
  "anthropic-ai-sdk",
