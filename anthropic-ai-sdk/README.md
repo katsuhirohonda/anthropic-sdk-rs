@@ -14,6 +14,7 @@ An unofficial Rust SDK for the [Anthropic API](https://docs.anthropic.com/claude
 - Token counting utilities for accurate message length estimation
 - Type-safe API with full Rust type definitions
 - Easy-to-use builder patterns for request construction
+- Beta API support including Files API
 
 ## Installation
 
@@ -22,6 +23,8 @@ cargo add anthropic-ai-sdk
 ```
 
 ## Quick Start
+
+### Messages API
 
 ```rust
 use anthropic_ai_sdk::client::AnthropicClient;
@@ -77,6 +80,36 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
+### Files API (Beta)
+
+```rust
+use anthropic_ai_sdk::client::AnthropicClient;
+use anthropic_ai_sdk::files::FileClient;
+use anthropic_ai_sdk::types::files::{FileError, ListFilesParams};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let anthropic_api_key = std::env::var("ANTHROPIC_API_KEY").unwrap();
+    let client = AnthropicClient::new::<FileError>(anthropic_api_key, "2023-06-01").unwrap();
+    
+    // List files with default parameters
+    let files = client.list_files(None).await?;
+    println!("Total files: {}", files.data.len());
+    
+    // List files with pagination
+    let params = ListFilesParams::new()
+        .limit(20)
+        .after_id("file_xyz");
+    let files = client.list_files(Some(&params)).await?;
+    
+    for file in files.data {
+        println!("File: {} ({} bytes)", file.filename, file.size_bytes);
+    }
+    
+    Ok(())
+}
+```
+
 ## Examples
 
 Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/examples) directory for more usage examples:
@@ -89,6 +122,8 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [Count Message Tokens](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/messages/count-message-tokens/src/main.rs) - How to count tokens in a message
 - Message Batch
   - [Create a Message Batch](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/message-batches/create-a-message-batch/src/main.rs) - How to create a message batch
+- Files (Beta)
+  - [List Files](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/list-files/src/main.rs) - How to list files in the Anthropic system
 - Admin Invites
   - [Get Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/get-invite/src/main.rs) - How to retrieve an organization invite
   - [List Invites](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/list-invites/src/main.rs) - How to list organization invites
@@ -112,6 +147,12 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [x] List Message Batches
   - [x] Cancel a Message Batch
   - [x] Delete a Message Batch
+- Files (Beta)
+  - [ ] Create a File
+  - [x] List Files
+  - [ ] Get File Metadata
+  - [ ] Download a File
+  - [ ] Delete a File
 - Admin API
   - Organization Member Management
     - [x] Get User
