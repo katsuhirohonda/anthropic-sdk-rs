@@ -24,7 +24,9 @@ async fn main() -> Result<(), AdminError> {
     // Get user_id and role from command line arguments
     let args: Vec<String> = env::args().collect();
     let user_id = args.get(1).expect("Please provide a user ID as argument");
-    let role_arg = args.get(2).expect("Please provide a role: user, developer, or billing");
+    let role_arg = args
+        .get(2)
+        .expect("Please provide a role: user, developer, or billing");
 
     let role = match role_arg.as_str() {
         "user" => UserRole::User,
@@ -40,7 +42,10 @@ async fn main() -> Result<(), AdminError> {
 
     match AdminClient::update_user(&client, user_id, &params).await {
         Ok(user) => {
-            info!("Successfully updated user: {} -> {:?}", user.email, user.role);
+            info!(
+                "Successfully updated user: {} -> {:?}",
+                user.email, user.role
+            );
         }
         Err(e) => {
             error!("Error updating user: {}", e);

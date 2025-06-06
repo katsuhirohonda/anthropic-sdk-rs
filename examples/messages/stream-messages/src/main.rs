@@ -1,5 +1,8 @@
 use anthropic_ai_sdk::client::AnthropicClient;
-use anthropic_ai_sdk::types::message::{CreateMessageParams, Message, MessageClient, MessageError, RequiredMessageParams, Role, Thinking, ThinkingType};
+use anthropic_ai_sdk::types::message::{
+    CreateMessageParams, Message, MessageClient, MessageError, RequiredMessageParams, Role,
+    Thinking, ThinkingType,
+};
 use futures_util::StreamExt;
 use std::env;
 use tracing::{error, info};
@@ -29,7 +32,7 @@ async fn main() {
     .with_stream(true)
     .with_thinking(Thinking {
         budget_tokens: 1024,
-        type_: ThinkingType::Enabled
+        type_: ThinkingType::Enabled,
     });
 
     match client.create_message_streaming(&body).await {

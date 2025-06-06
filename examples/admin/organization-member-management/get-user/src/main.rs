@@ -21,9 +21,7 @@ async fn main() -> Result<(), AdminError> {
 
     // Get the user ID from command line arguments
     let args: Vec<String> = env::args().collect();
-    let user_id = args
-        .get(1)
-        .expect("Please provide a user ID as argument");
+    let user_id = args.get(1).expect("Please provide a user ID as argument");
 
     let user = AdminClient::get_user(&client, user_id).await?;
 

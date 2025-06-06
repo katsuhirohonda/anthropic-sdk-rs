@@ -132,9 +132,9 @@ impl AdminUpdateWorkspaceParams {
 
 #[cfg(test)]
 mod tests {
-    use super::ListWorkspacesParams;
-    use super::AdminUpdateWorkspaceParams;
     use super::AdminCreateWorkspaceParams;
+    use super::AdminUpdateWorkspaceParams;
+    use super::ListWorkspacesParams;
 
     #[test]
     fn limit_clamps_upper_bound() {
@@ -186,4 +186,3 @@ mod tests {
         AdminCreateWorkspaceParams::new(s);
     }
 }
-

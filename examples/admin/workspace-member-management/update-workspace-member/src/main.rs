@@ -24,11 +24,11 @@ async fn main() -> Result<(), AdminError> {
     let client = AnthropicClient::new_admin::<AdminError>(admin_api_key, api_version)?;
 
     let args: Vec<String> = env::args().collect();
-    let workspace_id = args
-        .get(1)
-        .expect("Provide workspace ID as first argument");
+    let workspace_id = args.get(1).expect("Provide workspace ID as first argument");
     let user_id = args.get(2).expect("Provide user ID as second argument");
-    let role_arg = args.get(3).expect("Provide workspace role: user, developer, admin or billing");
+    let role_arg = args
+        .get(3)
+        .expect("Provide workspace role: user, developer, admin or billing");
 
     let role = match role_arg.as_str() {
         "user" => WorkspaceRole::WorkspaceUser,
@@ -45,7 +45,10 @@ async fn main() -> Result<(), AdminError> {
 
     match AdminClient::update_workspace_member(&client, workspace_id, user_id, &params).await {
         Ok(member) => {
-            info!("Updated member {} -> {:?}", member.user_id, member.workspace_role);
+            info!(
+                "Updated member {} -> {:?}",
+                member.user_id, member.workspace_role
+            );
         }
         Err(e) => {
             error!("Error updating workspace member: {}", e);

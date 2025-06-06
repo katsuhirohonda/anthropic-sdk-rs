@@ -22,7 +22,9 @@ async fn main() -> Result<(), AdminError> {
     let client = AnthropicClient::new_admin::<AdminError>(admin_api_key, api_version)?;
 
     let args: Vec<String> = env::args().collect();
-    let workspace_id = args.get(1).expect("Please provide a workspace ID as argument");
+    let workspace_id = args
+        .get(1)
+        .expect("Please provide a workspace ID as argument");
     let new_name = args.get(2).expect("Please provide the new workspace name");
 
     let params = AdminUpdateWorkspaceParams::new(new_name);

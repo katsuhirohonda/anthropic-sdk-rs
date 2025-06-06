@@ -1,6 +1,8 @@
 use anthropic_ai_sdk::client::AnthropicClient;
 use anthropic_ai_sdk::types::admin::api_keys::{AdminClient, AdminError};
-use anthropic_ai_sdk::types::admin::workspace_members::{AdminAddWorkspaceMemberParams, WorkspaceRole};
+use anthropic_ai_sdk::types::admin::workspace_members::{
+    AdminAddWorkspaceMemberParams, WorkspaceRole,
+};
 use std::env;
 use tracing::{error, info};
 
@@ -24,7 +26,9 @@ async fn main() -> Result<(), AdminError> {
     let args: Vec<String> = env::args().collect();
     let workspace_id = args.get(1).expect("Provide workspace ID as first argument");
     let user_id = args.get(2).expect("Provide user ID as second argument");
-    let role_arg = args.get(3).expect("Provide workspace role: user, developer, or admin");
+    let role_arg = args
+        .get(3)
+        .expect("Provide workspace role: user, developer, or admin");
 
     let role = match role_arg.as_str() {
         "user" => WorkspaceRole::WorkspaceUser,
@@ -40,7 +44,10 @@ async fn main() -> Result<(), AdminError> {
 
     match AdminClient::add_workspace_member(&client, workspace_id, &params).await {
         Ok(member) => {
-            info!("Added member {} with role {:?}", member.user_id, member.workspace_role);
+            info!(
+                "Added member {} with role {:?}",
+                member.user_id, member.workspace_role
+            );
         }
         Err(e) => {
             error!("Error adding workspace member: {}", e);

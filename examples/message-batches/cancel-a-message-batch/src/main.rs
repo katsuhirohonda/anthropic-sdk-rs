@@ -23,9 +23,7 @@ async fn main() {
     let client = AnthropicClient::new::<MessageBatchError>(api_key, api_version).unwrap();
 
     match client
-        .cancel_message_batch(&CancelMessageBatchParams::new(
-            "msgbatch_batch_id",
-        ))
+        .cancel_message_batch(&CancelMessageBatchParams::new("msgbatch_batch_id"))
         .await
     {
         Ok(results) => {

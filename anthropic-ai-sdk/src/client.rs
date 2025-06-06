@@ -355,4 +355,102 @@ impl AnthropicClient {
         self.send_request::<T, Q, (), E>(reqwest::Method::DELETE, path, query, None)
             .await
     }
+
+    /// Sends a request with a beta header to the Anthropic API
+    ///
+    /// This method is similar to `send_request` but adds the `anthropic-beta` header
+    /// required for beta features like the Files API.
+    ///
+    /// # Arguments
+    ///
+    /// * `method` - The HTTP method to use
+    /// * `path` - The API endpoint path
+    /// * `query` - Optional query parameters
+    /// * `body` - Optional request body
+    /// * `beta_header` - The beta header value (e.g., "files-api-2025-04-14")
+    pub(crate) async fn send_request_with_beta<T, Q, B, E>(
+        &self,
+        method: reqwest::Method,
+        path: &str,
+        query: Option<&Q>,
+        body: Option<&B>,
+        beta_header: &str,
+    ) -> Result<T, E>
+    where
+        T: DeserializeOwned,
+        Q: Serialize + ?Sized,
+        B: Serialize + ?Sized,
+        E: StdError + From<String>,
+    {
+        let url = format!("{}{}", self.api_base_url, path);
+
+        let mut request = self
+            .client
+            .request(method, &url)
+            .header("x-api-key", &self.api_key)
+            .header("anthropic-version", &self.api_version)
+            .header("anthropic-beta", beta_header);
+
+        // Add query parameters if provided
+        if let Some(q) = query {
+            request = request.query(q);
+        }
+
+        // Add request body if provided
+        if let Some(b) = body {
+            let _json = serde_json::to_string_pretty(b)
+                .map_err(|e| E::from(format!("Failed to serialize body: {}", e)))?;
+            request = request.json(b);
+        }
+
+        let response = request.send().await.map_err(|e| E::from(e.to_string()))?;
+
+        let status = response.status();
+        let body = response
+            .text()
+            .await
+            .map_err(|e| E::from(format!("Failed to get response body: {}", e)))?;
+
+        if !status.is_success() {
+            return Err(E::from(body));
+        }
+
+        // Parse the JSON response
+        serde_json::from_str(&body).map_err(|e| {
+            E::from(format!(
+                "JSON parsing error: {}. Response body: {}",
+                e, body
+            ))
+        })
+    }
+
+    /// Sends a GET request with a beta header
+    ///
+    /// Used for beta APIs that require the `anthropic-beta` header.
+    ///
+    /// # Arguments
+    ///
+    /// * `path` - The API endpoint path
+    /// * `query` - Optional query parameters
+    /// * `beta_header` - The beta header value
+    pub(crate) async fn get_with_beta<T, Q, E>(
+        &self,
+        path: &str,
+        query: Option<&Q>,
+        beta_header: &str,
+    ) -> Result<T, E>
+    where
+        T: DeserializeOwned,
+        Q: Serialize + ?Sized,
+        E: StdError + From<String>,
+    {
+        self.send_request_with_beta::<T, Q, (), E>(
+            reqwest::Method::GET,
+            path,
+            query,
+            None,
+            beta_header,
+        )
+        .await
+    }
 }
