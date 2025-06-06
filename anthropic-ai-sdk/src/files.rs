@@ -1,6 +1,6 @@
 //! Files API for managing files in Anthropic
 //!
-//! This module provides functionality for listing files in the Anthropic API.
+//! This module provides functionality for listing files and retrieving file metadata in the Anthropic API.
 //! The Files API is currently in beta and requires the `anthropic-beta: files-api-2025-04-14` header.
 //!
 //! # Example
@@ -81,6 +81,34 @@ pub trait FileClient {
         &'a self,
         params: Option<&'a ListFilesParams>,
     ) -> Result<ListFilesResponse, FileError>;
+
+    /// Get file metadata
+    ///
+    /// Retrieves metadata for a specific file by its ID.
+    ///
+    /// # Arguments
+    ///
+    /// * `file_id` - The unique identifier of the file
+    ///
+    /// # Example
+    ///
+    /// ```no_run
+    /// # use anthropic_ai_sdk::client::AnthropicClient;
+    /// # use anthropic_ai_sdk::files::FileClient;
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = AnthropicClient::new::<anthropic_ai_sdk::types::files::FileError>(
+    ///     "api-key".to_string(),
+    ///     "2023-06-01".to_string()
+    /// )?;
+    ///
+    /// // Get metadata for a specific file
+    /// let file = client.get_file_metadata("file_abc123").await?;
+    /// println!("File: {} ({} bytes)", file.filename, file.size_bytes);
+    /// # Ok(())
+    /// # }
+    /// ```
+    async fn get_file_metadata<'a>(&'a self, file_id: &'a str) -> Result<crate::types::files::File, FileError>;
 }
 
 #[async_trait]
@@ -99,6 +127,18 @@ impl FileClient for AnthropicClient {
 
         self.get_with_beta("/files", params, FILES_BETA_HEADER)
             .await
+    }
+
+    async fn get_file_metadata<'a>(&'a self, file_id: &'a str) -> Result<crate::types::files::File, FileError> {
+        // Files API requires the beta header
+        const FILES_BETA_HEADER: &str = "files-api-2025-04-14";
+        
+        self.get_with_beta(
+            &format!("/files/{}", file_id),
+            Option::<&()>::None,
+            FILES_BETA_HEADER,
+        )
+        .await
     }
 }
 

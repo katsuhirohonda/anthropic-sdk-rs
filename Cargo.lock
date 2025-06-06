@@ -425,6 +425,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "get-file-metadata"
+version = "0.1.0"
+dependencies = [
+ "anthropic-ai-sdk",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "get-invite"
 version = "0.1.0"
 dependencies = [

@@ -106,6 +106,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("File: {} ({} bytes)", file.filename, file.size_bytes);
     }
     
+    // Get metadata for a specific file
+    let file_metadata = client.get_file_metadata("file_abc123").await?;
+    println!("File: {} ({})", file_metadata.filename, file_metadata.mime_type);
+    
     Ok(())
 }
 ```
@@ -124,6 +128,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [Create a Message Batch](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/message-batches/create-a-message-batch/src/main.rs) - How to create a message batch
 - Files (Beta)
   - [List Files](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/list-files/src/main.rs) - How to list files in the Anthropic system
+  - [Get File Metadata](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/get-file-metadata/src/main.rs) - How to retrieve metadata for a specific file
 - Admin Invites
   - [Get Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/get-invite/src/main.rs) - How to retrieve an organization invite
   - [List Invites](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/list-invites/src/main.rs) - How to list organization invites
@@ -150,7 +155,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
 - Files (Beta)
   - [ ] Create a File
   - [x] List Files
-  - [ ] Get File Metadata
+  - [x] Get File Metadata
   - [ ] Download a File
   - [ ] Delete a File
 - Admin API
