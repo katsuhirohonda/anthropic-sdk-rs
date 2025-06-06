@@ -5,8 +5,8 @@
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use time::serde::rfc3339;
 use time::OffsetDateTime;
+use time::serde::rfc3339;
 
 /// Error types for the Models API
 #[derive(Debug, Error)]

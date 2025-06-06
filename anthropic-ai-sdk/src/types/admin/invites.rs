@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
-use time::serde::rfc3339;
 use time::OffsetDateTime;
+use time::serde::rfc3339;
 
 use super::users::UserRole;
 
@@ -136,4 +136,3 @@ mod tests {
         assert_eq!(params.limit, Some(1));
     }
 }
-

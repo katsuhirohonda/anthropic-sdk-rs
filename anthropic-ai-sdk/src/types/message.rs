@@ -265,7 +265,7 @@ pub struct Thinking {
 #[derive(Debug, Serialize)]
 pub enum ThinkingType {
     #[serde(rename = "enabled")]
-    Enabled
+    Enabled,
 }
 /// Message metadata
 #[derive(Debug, Serialize, Deserialize, Default)]

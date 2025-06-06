@@ -26,7 +26,10 @@ async fn main() -> Result<(), AdminError> {
 
     match AdminClient::delete_workspace_member(&client, workspace_id, user_id).await {
         Ok(resp) => {
-            info!("Deleted workspace member: {} - {}", resp.obj_type, resp.user_id);
+            info!(
+                "Deleted workspace member: {} - {}",
+                resp.obj_type, resp.user_id
+            );
         }
         Err(e) => {
             error!("Error deleting workspace member: {}", e);

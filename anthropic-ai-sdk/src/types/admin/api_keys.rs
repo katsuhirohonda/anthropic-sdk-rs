@@ -2,17 +2,17 @@
 //!
 //! This module contains the types and functions for the Anthropic Admin API.
 //!
-use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
-use super::users::{ListUsersParams, ListUsersResponse};
-use super::workspaces::{
-    GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse,
-};
-use thiserror::Error;
-use super::workspace_members::{GetWorkspaceMemberResponse, ListWorkspaceMembersParams, ListWorkspaceMembersResponse};
 use super::invites::{
     DeleteInviteResponse, GetInviteResponse, ListInvitesParams, ListInvitesResponse,
 };
+use super::users::{ListUsersParams, ListUsersResponse};
+use super::workspace_members::{
+    GetWorkspaceMemberResponse, ListWorkspaceMembersParams, ListWorkspaceMembersResponse,
+};
+use super::workspaces::{GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse};
+use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
+use thiserror::Error;
 use time::OffsetDateTime;
 use time::serde::rfc3339;
 
@@ -55,7 +55,10 @@ pub trait AdminClient {
         params: Option<&'a ListUsersParams>,
     ) -> Result<ListUsersResponse, AdminError>;
 
-    async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
+    async fn get_user<'a>(
+        &'a self,
+        user_id: &'a str,
+    ) -> Result<crate::types::admin::users::OrganizationUser, AdminError>;
 
     async fn update_user<'a>(
         &'a self,
@@ -78,7 +81,10 @@ pub trait AdminClient {
         params: &'a crate::types::admin::workspaces::AdminCreateWorkspaceParams,
     ) -> Result<crate::types::admin::workspaces::CreateWorkspaceResponse, AdminError>;
 
-    async fn get_workspace<'a>(&'a self, workspace_id: &'a str) -> Result<GetWorkspaceResponse, AdminError>;
+    async fn get_workspace<'a>(
+        &'a self,
+        workspace_id: &'a str,
+    ) -> Result<GetWorkspaceResponse, AdminError>;
 
     async fn update_workspace<'a>(
         &'a self,

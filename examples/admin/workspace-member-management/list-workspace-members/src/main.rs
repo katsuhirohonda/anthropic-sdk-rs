@@ -2,7 +2,7 @@ use anthropic_ai_sdk::client::AnthropicClient;
 use anthropic_ai_sdk::types::admin::api_keys::{AdminClient, AdminError};
 use anthropic_ai_sdk::types::admin::workspace_members::ListWorkspaceMembersParams;
 use std::env;
-use tracing::{info, error};
+use tracing::{error, info};
 
 #[tokio::main]
 async fn main() -> Result<(), AdminError> {

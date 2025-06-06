@@ -24,7 +24,9 @@ async fn main() -> Result<(), AdminError> {
 
     let args: Vec<String> = env::args().collect();
     let email = args.get(1).expect("Please provide an email as argument");
-    let role_arg = args.get(2).expect("Please provide a role: user, developer, or billing");
+    let role_arg = args
+        .get(2)
+        .expect("Please provide a role: user, developer, or billing");
 
     let role = match role_arg.as_str() {
         "user" => UserRole::User,
@@ -40,7 +42,10 @@ async fn main() -> Result<(), AdminError> {
 
     match AdminClient::create_invite(&client, &params).await {
         Ok(invite) => {
-            info!("Successfully created invite: {} -> {}", invite.id, invite.email);
+            info!(
+                "Successfully created invite: {} -> {}",
+                invite.id, invite.email
+            );
         }
         Err(e) => {
             error!("Error creating invite: {}", e);

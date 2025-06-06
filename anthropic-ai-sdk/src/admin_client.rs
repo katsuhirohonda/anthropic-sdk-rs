@@ -8,21 +8,20 @@ use crate::types::admin::api_keys::{
     AdminClient, AdminError, AdminUpdateApiKeyParams, ApiKey, ListApiKeysParams,
     ListApiKeysResponse,
 };
+use crate::types::admin::invites::{
+    DeleteInviteResponse, GetInviteResponse, ListInvitesParams, ListInvitesResponse,
+};
 use crate::types::admin::users::{
     AdminUpdateUserParams, DeleteUserResponse, ListUsersParams, ListUsersResponse, OrganizationUser,
+};
+use crate::types::admin::workspace_members::{
+    AdminAddWorkspaceMemberParams, AdminUpdateWorkspaceMemberParams, GetWorkspaceMemberResponse,
+    ListWorkspaceMembersParams, ListWorkspaceMembersResponse, WorkspaceMember,
 };
 use crate::types::admin::workspaces::{
     GetWorkspaceResponse, ListWorkspacesParams, ListWorkspacesResponse,
 };
 use async_trait::async_trait;
-use crate::types::admin::workspace_members::{
-    AdminAddWorkspaceMemberParams, AdminUpdateWorkspaceMemberParams,
-    GetWorkspaceMemberResponse, ListWorkspaceMembersParams, ListWorkspaceMembersResponse,
-    WorkspaceMember,
-};
-use crate::types::admin::invites::{
-    DeleteInviteResponse, GetInviteResponse, ListInvitesParams, ListInvitesResponse,
-};
 
 #[async_trait]
 impl AdminClient for AnthropicClient {
@@ -196,8 +195,11 @@ impl AdminClient for AnthropicClient {
 
     /// Retrieves a user in the organization
     async fn get_user<'a>(&'a self, user_id: &'a str) -> Result<OrganizationUser, AdminError> {
-        self.get(&format!("/organizations/users/{}", user_id), Option::<&()>::None)
-            .await
+        self.get(
+            &format!("/organizations/users/{}", user_id),
+            Option::<&()>::None,
+        )
+        .await
     }
 
     async fn update_user<'a>(
@@ -205,11 +207,8 @@ impl AdminClient for AnthropicClient {
         user_id: &'a str,
         params: &'a AdminUpdateUserParams,
     ) -> Result<OrganizationUser, AdminError> {
-        self.post(
-            &format!("/organizations/users/{}", user_id),
-            Some(params),
-        )
-        .await
+        self.post(&format!("/organizations/users/{}", user_id), Some(params))
+            .await
     }
 
     async fn delete_user<'a>(&'a self, user_id: &'a str) -> Result<DeleteUserResponse, AdminError> {
@@ -286,7 +285,10 @@ impl AdminClient for AnthropicClient {
         user_id: &'a str,
     ) -> Result<GetWorkspaceMemberResponse, AdminError> {
         self.get(
-            &format!("/organizations/workspaces/{}/members/{}", workspace_id, user_id),
+            &format!(
+                "/organizations/workspaces/{}/members/{}",
+                workspace_id, user_id
+            ),
             Option::<&()>::None,
         )
         .await
@@ -324,7 +326,8 @@ impl AdminClient for AnthropicClient {
         &'a self,
         workspace_id: &'a str,
         user_id: &'a str,
-    ) -> Result<crate::types::admin::workspace_members::DeleteWorkspaceMemberResponse, AdminError> {
+    ) -> Result<crate::types::admin::workspace_members::DeleteWorkspaceMemberResponse, AdminError>
+    {
         self.delete::<crate::types::admin::workspace_members::DeleteWorkspaceMemberResponse, (), AdminError>(
             &format!("/organizations/workspaces/{}/members/{}", workspace_id, user_id),
             Option::<&()>::None,
@@ -347,7 +350,11 @@ impl AdminClient for AnthropicClient {
     }
 
     async fn get_invite<'a>(&'a self, invite_id: &'a str) -> Result<GetInviteResponse, AdminError> {
-        self.get(&format!("/organizations/invites/{}", invite_id), Option::<&()>::None).await
+        self.get(
+            &format!("/organizations/invites/{}", invite_id),
+            Option::<&()>::None,
+        )
+        .await
     }
 
     async fn delete_invite<'a>(
