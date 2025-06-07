@@ -533,4 +533,63 @@ impl AnthropicClient {
         )
         .await
     }
+
+    /// Uploads a file using multipart/form-data with a beta header
+    ///
+    /// Used for the Files API upload endpoint.
+    ///
+    /// # Arguments
+    ///
+    /// * `path` - The API endpoint path
+    /// * `file_name` - The name of the file
+    /// * `file_content` - The file content as bytes
+    /// * `beta_header` - The beta header value
+    pub(crate) async fn upload_file_with_beta<T, E>(
+        &self,
+        path: &str,
+        file_name: &str,
+        file_content: Vec<u8>,
+        beta_header: &str,
+    ) -> Result<T, E>
+    where
+        T: DeserializeOwned,
+        E: StdError + From<String>,
+    {
+        let url = format!("{}{}", self.api_base_url, path);
+
+        let part = reqwest::multipart::Part::bytes(file_content)
+            .file_name(file_name.to_string());
+
+        let form = reqwest::multipart::Form::new()
+            .part("file", part);
+
+        let response = self
+            .client
+            .post(&url)
+            .header("x-api-key", &self.api_key)
+            .header("anthropic-version", &self.api_version)
+            .header("anthropic-beta", beta_header)
+            .multipart(form)
+            .send()
+            .await
+            .map_err(|e| E::from(e.to_string()))?;
+
+        let status = response.status();
+        let body = response
+            .text()
+            .await
+            .map_err(|e| E::from(format!("Failed to get response body: {}", e)))?;
+
+        if !status.is_success() {
+            return Err(E::from(body));
+        }
+
+        // Parse the JSON response
+        serde_json::from_str(&body).map_err(|e| {
+            E::from(format!(
+                "JSON parsing error: {}. Response body: {}",
+                e, body
+            ))
+        })
+    }
 }

@@ -36,6 +36,7 @@ members = [
     "examples/files/list-files",
     "examples/files/get-file-metadata",
     "examples/files/download-file",
+    "examples/files/upload-file",
 ]
 default-members = ["anthropic-ai-sdk"]
 resolver = "2"

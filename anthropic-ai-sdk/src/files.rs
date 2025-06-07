@@ -146,6 +146,43 @@ pub trait FileClient {
     /// # }
     /// ```
     async fn download_file<'a>(&'a self, file_id: &'a str) -> Result<Vec<u8>, FileError>;
+
+    /// Upload a file
+    ///
+    /// Uploads a file to the Anthropic API.
+    ///
+    /// # Arguments
+    ///
+    /// * `file_name` - The name of the file to upload
+    /// * `file_content` - The file content as bytes
+    ///
+    /// # Returns
+    ///
+    /// Returns a File object containing metadata about the uploaded file.
+    ///
+    /// # Example
+    ///
+    /// ```no_run
+    /// # use anthropic_ai_sdk::client::AnthropicClient;
+    /// # use anthropic_ai_sdk::files::FileClient;
+    /// # use std::fs;
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = AnthropicClient::new::<anthropic_ai_sdk::types::files::FileError>(
+    ///     "api-key".to_string(),
+    ///     "2023-06-01".to_string()
+    /// )?;
+    ///
+    /// // Read file from disk
+    /// let file_content = fs::read("document.pdf")?;
+    /// 
+    /// // Upload the file
+    /// let uploaded_file = client.upload_file("document.pdf", file_content).await?;
+    /// println!("Uploaded file ID: {}", uploaded_file.id);
+    /// # Ok(())
+    /// # }
+    /// ```
+    async fn upload_file<'a>(&'a self, file_name: &'a str, file_content: Vec<u8>) -> Result<crate::types::files::File, FileError>;
 }
 
 #[async_trait]
@@ -184,6 +221,19 @@ impl FileClient for AnthropicClient {
         
         self.download_with_beta(
             &format!("/files/{}/content", file_id),
+            FILES_BETA_HEADER,
+        )
+        .await
+    }
+
+    async fn upload_file<'a>(&'a self, file_name: &'a str, file_content: Vec<u8>) -> Result<crate::types::files::File, FileError> {
+        // Files API requires the beta header
+        const FILES_BETA_HEADER: &str = "files-api-2025-04-14";
+        
+        self.upload_file_with_beta(
+            "/files",
+            file_name,
+            file_content,
             FILES_BETA_HEADER,
         )
         .await
