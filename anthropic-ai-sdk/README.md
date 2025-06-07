@@ -158,7 +158,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [x] Cancel a Message Batch
   - [x] Delete a Message Batch
 - Files (Beta)
-  - [ ] Create a File
+  - [x] Create a File
   - [x] List Files
   - [x] Get File Metadata
   - [x] Download a File
