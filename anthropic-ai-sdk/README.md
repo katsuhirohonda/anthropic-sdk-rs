@@ -110,6 +110,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file_metadata = client.get_file_metadata("file_abc123").await?;
     println!("File: {} ({})", file_metadata.filename, file_metadata.mime_type);
     
+    // Download file content
+    let content = client.download_file("file_abc123").await?;
+    std::fs::write("downloaded_file.pdf", content)?;
+    
     Ok(())
 }
 ```
@@ -129,6 +133,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
 - Files (Beta)
   - [List Files](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/list-files/src/main.rs) - How to list files in the Anthropic system
   - [Get File Metadata](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/get-file-metadata/src/main.rs) - How to retrieve metadata for a specific file
+  - [Download File](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/download-file/src/main.rs) - How to download file content
 - Admin Invites
   - [Get Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/get-invite/src/main.rs) - How to retrieve an organization invite
   - [List Invites](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/list-invites/src/main.rs) - How to list organization invites
@@ -156,7 +161,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [ ] Create a File
   - [x] List Files
   - [x] Get File Metadata
-  - [ ] Download a File
+  - [x] Download a File
   - [ ] Delete a File
 - Admin API
   - Organization Member Management

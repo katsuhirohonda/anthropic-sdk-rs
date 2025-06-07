@@ -453,4 +453,84 @@ impl AnthropicClient {
         )
         .await
     }
+
+    /// Sends a request with a beta header and returns raw bytes
+    ///
+    /// This method is used for endpoints that return binary data instead of JSON.
+    ///
+    /// # Arguments
+    ///
+    /// * `method` - The HTTP method to use
+    /// * `path` - The API endpoint path
+    /// * `query` - Optional query parameters
+    /// * `beta_header` - The beta header value
+    pub(crate) async fn send_request_with_beta_bytes<Q, E>(
+        &self,
+        method: reqwest::Method,
+        path: &str,
+        query: Option<&Q>,
+        beta_header: &str,
+    ) -> Result<Vec<u8>, E>
+    where
+        Q: Serialize + ?Sized,
+        E: StdError + From<String>,
+    {
+        let url = format!("{}{}", self.api_base_url, path);
+
+        let mut request = self
+            .client
+            .request(method, &url)
+            .header("x-api-key", &self.api_key)
+            .header("anthropic-version", &self.api_version)
+            .header("anthropic-beta", beta_header);
+
+        // Add query parameters if provided
+        if let Some(q) = query {
+            request = request.query(q);
+        }
+
+        let response = request.send().await.map_err(|e| E::from(e.to_string()))?;
+
+        let status = response.status();
+        
+        if !status.is_success() {
+            let error_body = response
+                .text()
+                .await
+                .unwrap_or_else(|_| "Failed to get error response".to_string());
+            return Err(E::from(error_body));
+        }
+
+        // Get the response as bytes
+        response
+            .bytes()
+            .await
+            .map(|b| b.to_vec())
+            .map_err(|e| E::from(format!("Failed to get response bytes: {}", e)))
+    }
+
+    /// Downloads a file with a beta header
+    ///
+    /// Used for the Files API download endpoint that returns binary content.
+    ///
+    /// # Arguments
+    ///
+    /// * `path` - The API endpoint path
+    /// * `beta_header` - The beta header value
+    pub(crate) async fn download_with_beta<E>(
+        &self,
+        path: &str,
+        beta_header: &str,
+    ) -> Result<Vec<u8>, E>
+    where
+        E: StdError + From<String>,
+    {
+        self.send_request_with_beta_bytes::<(), E>(
+            reqwest::Method::GET,
+            path,
+            None,
+            beta_header,
+        )
+        .await
+    }
 }

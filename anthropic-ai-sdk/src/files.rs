@@ -1,6 +1,6 @@
 //! Files API for managing files in Anthropic
 //!
-//! This module provides functionality for listing files and retrieving file metadata in the Anthropic API.
+//! This module provides functionality for listing files, retrieving file metadata, and downloading file content in the Anthropic API.
 //! The Files API is currently in beta and requires the `anthropic-beta: files-api-2025-04-14` header.
 //!
 //! # Example
@@ -109,6 +109,43 @@ pub trait FileClient {
     /// # }
     /// ```
     async fn get_file_metadata<'a>(&'a self, file_id: &'a str) -> Result<crate::types::files::File, FileError>;
+
+    /// Download file content
+    ///
+    /// Downloads the raw content of a file by its ID.
+    ///
+    /// # Arguments
+    ///
+    /// * `file_id` - The unique identifier of the file to download
+    ///
+    /// # Returns
+    ///
+    /// Returns the raw file content as bytes on success.
+    ///
+    /// # Example
+    ///
+    /// ```no_run
+    /// # use anthropic_ai_sdk::client::AnthropicClient;
+    /// # use anthropic_ai_sdk::files::FileClient;
+    /// # use std::fs::File;
+    /// # use std::io::Write;
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = AnthropicClient::new::<anthropic_ai_sdk::types::files::FileError>(
+    ///     "api-key".to_string(),
+    ///     "2023-06-01".to_string()
+    /// )?;
+    ///
+    /// // Download file content
+    /// let file_content = client.download_file("file_abc123").await?;
+    /// 
+    /// // Save to disk
+    /// let mut file = File::create("downloaded_file.pdf")?;
+    /// file.write_all(&file_content)?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    async fn download_file<'a>(&'a self, file_id: &'a str) -> Result<Vec<u8>, FileError>;
 }
 
 #[async_trait]
@@ -136,6 +173,17 @@ impl FileClient for AnthropicClient {
         self.get_with_beta(
             &format!("/files/{}", file_id),
             Option::<&()>::None,
+            FILES_BETA_HEADER,
+        )
+        .await
+    }
+
+    async fn download_file<'a>(&'a self, file_id: &'a str) -> Result<Vec<u8>, FileError> {
+        // Files API requires the beta header
+        const FILES_BETA_HEADER: &str = "files-api-2025-04-14";
+        
+        self.download_with_beta(
+            &format!("/files/{}/content", file_id),
             FILES_BETA_HEADER,
         )
         .await
