@@ -36,7 +36,7 @@
 //! ```
 
 use crate::client::AnthropicClient;
-use crate::types::files::{FileError, ListFilesParams, ListFilesResponse};
+use crate::types::files::{DeletedFile, FileError, ListFilesParams, ListFilesResponse};
 use async_trait::async_trait;
 
 /// Trait for file-related operations in the Anthropic API
@@ -183,6 +183,38 @@ pub trait FileClient {
     /// # }
     /// ```
     async fn upload_file<'a>(&'a self, file_name: &'a str, file_content: Vec<u8>) -> Result<crate::types::files::File, FileError>;
+
+    /// Delete a file
+    ///
+    /// Deletes a file from the Anthropic API.
+    ///
+    /// # Arguments
+    ///
+    /// * `file_id` - The unique identifier of the file to delete
+    ///
+    /// # Returns
+    ///
+    /// Returns a DeletedFile object confirming the deletion.
+    ///
+    /// # Example
+    ///
+    /// ```no_run
+    /// # use anthropic_ai_sdk::client::AnthropicClient;
+    /// # use anthropic_ai_sdk::files::FileClient;
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let client = AnthropicClient::new::<anthropic_ai_sdk::types::files::FileError>(
+    ///     "api-key".to_string(),
+    ///     "2023-06-01".to_string()
+    /// )?;
+    ///
+    /// // Delete a file
+    /// let deleted_file = client.delete_file("file_abc123").await?;
+    /// println!("Deleted file ID: {}", deleted_file.id);
+    /// # Ok(())
+    /// # }
+    /// ```
+    async fn delete_file<'a>(&'a self, file_id: &'a str) -> Result<DeletedFile, FileError>;
 }
 
 #[async_trait]
@@ -234,6 +266,18 @@ impl FileClient for AnthropicClient {
             "/files",
             file_name,
             file_content,
+            FILES_BETA_HEADER,
+        )
+        .await
+    }
+
+    async fn delete_file<'a>(&'a self, file_id: &'a str) -> Result<DeletedFile, FileError> {
+        // Files API requires the beta header
+        const FILES_BETA_HEADER: &str = "files-api-2025-04-14";
+        
+        self.delete_with_beta(
+            &format!("/files/{}", file_id),
+            Option::<&()>::None,
             FILES_BETA_HEADER,
         )
         .await

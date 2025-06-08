@@ -114,6 +114,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let content = client.download_file("file_abc123").await?;
     std::fs::write("downloaded_file.pdf", content)?;
     
+    // Upload a file
+    let file_content = std::fs::read("document.pdf")?;
+    let uploaded_file = client.upload_file("document.pdf", file_content).await?;
+    println!("Uploaded file ID: {}", uploaded_file.id);
+    
+    // Delete a file
+    let deleted_file = client.delete_file("file_abc123").await?;
+    println!("Deleted file: {}", deleted_file.id);
+    
     Ok(())
 }
 ```
@@ -134,6 +143,8 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [List Files](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/list-files/src/main.rs) - How to list files in the Anthropic system
   - [Get File Metadata](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/get-file-metadata/src/main.rs) - How to retrieve metadata for a specific file
   - [Download File](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/download-file/src/main.rs) - How to download file content
+  - [Upload File](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/upload-file/src/main.rs) - How to upload a file
+  - [Delete File](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/files/delete-file/src/main.rs) - How to delete a file
 - Admin Invites
   - [Get Invite](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/get-invite/src/main.rs) - How to retrieve an organization invite
   - [List Invites](https://github.com/e-bebe/anthropic-sdk-rs/blob/main/examples/admin/organization-invites/list-invites/src/main.rs) - How to list organization invites
@@ -162,7 +173,7 @@ Check out the [examples](https://github.com/e-bebe/anthropic-sdk-rs/tree/main/ex
   - [x] List Files
   - [x] Get File Metadata
   - [x] Download a File
-  - [ ] Delete a File
+  - [x] Delete a File
 - Admin API
   - Organization Member Management
     - [x] Get User

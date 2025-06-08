@@ -534,6 +534,36 @@ impl AnthropicClient {
         .await
     }
 
+    /// Sends a DELETE request with a beta header
+    ///
+    /// Used for beta APIs that require the `anthropic-beta` header.
+    ///
+    /// # Arguments
+    ///
+    /// * `path` - The API endpoint path
+    /// * `query` - Optional query parameters
+    /// * `beta_header` - The beta header value
+    pub(crate) async fn delete_with_beta<T, Q, E>(
+        &self,
+        path: &str,
+        query: Option<&Q>,
+        beta_header: &str,
+    ) -> Result<T, E>
+    where
+        T: DeserializeOwned,
+        Q: Serialize + ?Sized,
+        E: StdError + From<String>,
+    {
+        self.send_request_with_beta::<T, Q, (), E>(
+            reqwest::Method::DELETE,
+            path,
+            query,
+            None,
+            beta_header,
+        )
+        .await
+    }
+
     /// Uploads a file using multipart/form-data with a beta header
     ///
     /// Used for the Files API upload endpoint.

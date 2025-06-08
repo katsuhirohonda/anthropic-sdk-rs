@@ -131,6 +131,17 @@ pub struct ListFilesResponse {
     pub has_more: bool,
 }
 
+/// Response from deleting a file
+#[derive(Debug, Deserialize)]
+pub struct DeletedFile {
+    /// ID of the deleted file
+    pub id: String,
+
+    /// Object type (always "file_deleted")
+    #[serde(rename = "type")]
+    pub deleted_type: String,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
