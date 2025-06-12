@@ -46,7 +46,7 @@ pub struct RequiredMessageParams {
 }
 
 /// Parameters for creating a message
-#[derive(Debug, Serialize, Default)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct CreateMessageParams {
     /// Maximum number of tokens to generate
     pub max_tokens: u32,
@@ -251,10 +251,13 @@ pub enum ToolChoice {
     /// Model must use a specific tool
     #[serde(rename = "tool")]
     Tool { name: String },
+    /// Model must not use any tools
+    #[serde(rename = "none")]
+    None,
 }
 
 /// Configuration for extended thinking
-#[derive(Debug, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Thinking {
     /// Must be at least 1024 tokens
     pub budget_tokens: usize,
@@ -262,7 +265,7 @@ pub struct Thinking {
     pub type_: ThinkingType,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub enum ThinkingType {
     #[serde(rename = "enabled")]
     Enabled,
@@ -276,7 +279,7 @@ pub struct Metadata {
 }
 
 /// Response from creating a message
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct CreateMessageResponse {
     /// Content blocks in the response
     pub content: Vec<ContentBlock>,
@@ -298,17 +301,18 @@ pub struct CreateMessageResponse {
 }
 
 /// Reason for stopping message generation
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum StopReason {
     EndTurn,
     MaxTokens,
     StopSequence,
     ToolUse,
+    Refusal,
 }
 
 /// Token usage statistics
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Usage {
     /// Input tokens used
     pub input_tokens: u32,
@@ -316,7 +320,7 @@ pub struct Usage {
     pub output_tokens: u32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StreamUsage {
     /// Input tokens used (may be missing in some events)
     #[serde(default)]
@@ -379,7 +383,7 @@ pub struct CountMessageTokensResponse {
     pub input_tokens: u32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub enum StreamEvent {
     #[serde(rename = "message_start")]
@@ -409,7 +413,7 @@ pub enum StreamEvent {
     Error { error: StreamError },
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct MessageStartContent {
     pub id: String,
     #[serde(rename = "type")]
@@ -422,7 +426,7 @@ pub struct MessageStartContent {
     pub usage: Usage,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub enum ContentBlockDelta {
     #[serde(rename = "text_delta")]
@@ -435,13 +439,13 @@ pub enum ContentBlockDelta {
     SignatureDelta { signature: String },
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct MessageDeltaContent {
     pub stop_reason: Option<StopReason>,
     pub stop_sequence: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StreamError {
     #[serde(rename = "type")]
     pub type_: String,
