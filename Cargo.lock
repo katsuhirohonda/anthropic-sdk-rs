@@ -38,7 +38,7 @@ dependencies = [
 
 [[package]]
 name = "anthropic-ai-sdk"
-version = "0.2.25"
+version = "0.2.26"
 dependencies = [
  "async-trait",
  "eventsource-stream",
