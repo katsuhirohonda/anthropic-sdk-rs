@@ -230,6 +230,29 @@ cd examples/models/list-models
 cargo run 
 ```
 
+### TLS Backend Selection
+
+The SDK supports two TLS backends via feature flags:
+
+- **`rustls-tls`** (default): Uses rustls with webpki-roots - a pure Rust implementation with no system dependencies.
+- **`native-tls`**: Uses the platform's native TLS implementation (OpenSSL on Linux, Security.framework on macOS, SChannel on Windows). Requires OpenSSL development libraries on Linux.
+
+To use native-tls instead of rustls:
+
+```bash
+cargo add anthropic-ai-sdk --no-default-features --features native-tls
+```
+
+Or in your `Cargo.toml`:
+
+```toml
+# Use rustls (default, pure Rust, no system dependencies)
+anthropic-ai-sdk = "0.2"
+
+# Or use native-tls
+anthropic-ai-sdk = { version = "0.2", default-features = false, features = ["native-tls"] }
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
