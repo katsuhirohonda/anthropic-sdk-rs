@@ -54,9 +54,9 @@ pub struct CreateMessageParams {
     pub messages: Vec<Message>,
     /// Model to use
     pub model: String,
-    /// System prompt
+    /// System prompt (plain string or structured blocks with cache control)
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub system: Option<String>,
+    pub system: Option<SystemPrompt>,
     /// Temperature for response generation
     #[serde(skip_serializing_if = "Option::is_none")]
     pub temperature: Option<f32>,
@@ -104,7 +104,7 @@ impl CreateMessageParams {
     }
 
     // Builder methods for optional parameters
-    pub fn with_system(mut self, system: impl Into<String>) -> Self {
+    pub fn with_system(mut self, system: impl Into<SystemPrompt>) -> Self {
         self.system = Some(system.into());
         self
     }
@@ -189,22 +189,34 @@ pub enum MessageContent {
 pub enum ContentBlock {
     /// Text content
     #[serde(rename = "text")]
-    Text { text: String },
+    Text {
+        text: String,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        cache_control: Option<CacheControl>,
+    },
     /// Image content
     #[serde(rename = "image")]
-    Image { source: ImageSource },
+    Image {
+        source: ImageSource,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        cache_control: Option<CacheControl>,
+    },
     /// Tool use content
     #[serde(rename = "tool_use")]
     ToolUse {
         id: String,
         name: String,
         input: serde_json::Value,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        cache_control: Option<CacheControl>,
     },
     /// Tool result content
     #[serde(rename = "tool_result")]
     ToolResult {
         tool_use_id: String,
         content: String,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        cache_control: Option<CacheControl>,
     },
     /// Thinking content
     #[serde(rename = "thinking")]
@@ -212,6 +224,79 @@ pub enum ContentBlock {
     /// Redacted thinking
     #[serde(rename = "redacted_thinking")]
     RedactedThinking { data: String },
+}
+
+/// Cache control configuration for prompt caching
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+pub struct CacheControl {
+    #[serde(rename = "type")]
+    pub type_: CacheControlType,
+}
+
+impl CacheControl {
+    /// Create an ephemeral cache control (the only supported type)
+    pub fn ephemeral() -> Self {
+        Self {
+            type_: CacheControlType::Ephemeral,
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum CacheControlType {
+    Ephemeral,
+}
+
+/// A system prompt block, allowing cache control on system prompts
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct SystemBlock {
+    #[serde(rename = "type")]
+    pub type_: String,
+    pub text: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cache_control: Option<CacheControl>,
+}
+
+impl SystemBlock {
+    pub fn new(text: impl Into<String>) -> Self {
+        Self {
+            type_: "text".to_string(),
+            text: text.into(),
+            cache_control: None,
+        }
+    }
+
+    pub fn with_cache_control(mut self, cache_control: CacheControl) -> Self {
+        self.cache_control = Some(cache_control);
+        self
+    }
+}
+
+/// System prompt: either a plain string or structured blocks with cache control
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(untagged)]
+pub enum SystemPrompt {
+    Text(String),
+    Blocks(Vec<SystemBlock>),
+}
+
+impl From<String> for SystemPrompt {
+    fn from(s: String) -> Self {
+        SystemPrompt::Text(s)
+    }
+}
+
+impl From<&str> for SystemPrompt {
+    fn from(s: &str) -> Self {
+        SystemPrompt::Text(s.to_string())
+    }
+}
+
+impl From<Vec<SystemBlock>> for SystemPrompt {
+    fn from(blocks: Vec<SystemBlock>) -> Self {
+        SystemPrompt::Blocks(blocks)
+    }
 }
 
 /// Source of an image
@@ -224,6 +309,9 @@ pub struct ImageSource {
     pub media_type: String,
     /// Base64-encoded image data
     pub data: String,
+    /// Cache control for prompt caching
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cache_control: Option<CacheControl>,
 }
 
 /// Tool definition
@@ -236,6 +324,9 @@ pub struct Tool {
     pub description: Option<String>,
     /// JSON schema for tool input
     pub input_schema: serde_json::Value,
+    /// Cache control for prompt caching
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cache_control: Option<CacheControl>,
 }
 
 /// Tool choice configuration
@@ -318,6 +409,12 @@ pub struct Usage {
     pub input_tokens: u32,
     /// Output tokens used
     pub output_tokens: u32,
+    /// Tokens written to the prompt cache
+    #[serde(default)]
+    pub cache_creation_input_tokens: u32,
+    /// Tokens read from the prompt cache
+    #[serde(default)]
+    pub cache_read_input_tokens: u32,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -353,7 +450,18 @@ impl Message {
 impl ContentBlock {
     /// Create a new text block
     pub fn text(text: impl Into<String>) -> Self {
-        Self::Text { text: text.into() }
+        Self::Text {
+            text: text.into(),
+            cache_control: None,
+        }
+    }
+
+    /// Create a new text block with cache control
+    pub fn text_cached(text: impl Into<String>) -> Self {
+        Self::Text {
+            text: text.into(),
+            cache_control: Some(CacheControl::ephemeral()),
+        }
     }
 
     /// Create a new image block
@@ -367,7 +475,9 @@ impl ContentBlock {
                 type_: type_.into(),
                 media_type: media_type.into(),
                 data: data.into(),
+                cache_control: None,
             },
+            cache_control: None,
         }
     }
 }
